@@ -3,7 +3,6 @@ await Promise.resolve(console.log('Hello World'));
 
 export {};
 
-
 /* Object.groupBy(items, callbackFn) */
 
 // const inventory = [
@@ -17,8 +16,8 @@ export {};
 //   const result = Object.groupBy(inventory, ({ type }) => type);
 // //   const result = Object.groupBy(inventory, ({ type }) => type);
 
-// const array = [0, 1, 2, 3, 4, 5];
+const array = [0, 1, 2, 3, 4, 5];
 
-// const myObj = Object.groupBy(array, (num, index) => {
-//     return num % 2 === 0 ? "even": "odd";
+// const myObj = Object.groupBy(array, (num: number, index: number) => {
+//   return num % 2 === 0 ? 'even' : 'odd';
 // });
