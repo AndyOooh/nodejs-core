@@ -2,8 +2,14 @@
   "name": "nodejs-core",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": ">=21.0.0"
+  },
   "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.0-beta"
   }
 }
