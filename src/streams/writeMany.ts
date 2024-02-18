@@ -11,7 +11,7 @@ const writeToFile = async (path: string, data: any) => {
 };
 
 const main = async () => {
-  const arr = Array.from({ length: 1e4 }, (v, i) => i);
+  const arr = Array.from({ length: 1e5 }, (v, i) => i);
   console.log('before');
   await Promise.all(
     arr.map(async (ele: any) => {
