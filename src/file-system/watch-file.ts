@@ -1,20 +1,43 @@
-// import fs from 'fs/promises';
-import { watch, open } from 'node:fs/promises';
+import { watch, open, unlink, rename } from 'node:fs/promises';
 
 const createFile = async (filename: string, filePath: string, data: any) => {
   const completePath = `${filePath}/${filename}`;
   try {
-    await open(completePath, 'r');
+    const exitistingFileHandler = await open(completePath, 'r');
     console.log(`file already exists ${completePath}`);
+    exitistingFileHandler.close();
   } catch (error: any) {
-    // console.log('error: ', error);
     const newFileHandler = await open(completePath, 'w');
-    // await newFileHandler.write(data, 20, 'utf8');
     await newFileHandler.write(data);
     await newFileHandler.close();
+  }
+};
+
+const deleteFile = async (filename: string, filePath: string) => {
+  const completePath = `${filePath}/${filename}`;
+  try {
+    await unlink(completePath);
+  } catch (error: any) {
+    console.log('error deleting file: ', error);
+    throw error;
+  }
+};
+
+const renameFile = async (filename: string, filePath: string, newFilename: string) => {
+  const completePath = `${filePath}/${filename}`;
+  const newCompletePath = `${filePath}/${newFilename}`;
+  try {
+    await rename(completePath, newCompletePath);
+    console.log(`Renamed ${completePath} to ${newCompletePath}`);
+  } catch (error: any) {
+    console.log('error renaming file: ', error);
     // throw error;
   }
 };
+
+
+
+// const addToFile = async (filename: string, filePath: string, data: any) => {
 
 const watchFile = async (filename: string, filePath: string) => {
   try {
@@ -52,16 +75,23 @@ const watchFile = async (filename: string, filePath: string) => {
       const fileData = fileContent.slice(indexOfSecondNewLine + 1);
 
       switch (command) {
-        case 'Create a new file':
+        case 'Create a file':
           await createFile(fileName, filePath, fileData);
           console.log('File created');
           break;
-        case 'Modify a file':
+        case 'Delete a file':
+          await deleteFile(fileName, filePath);
+          console.log('File deleted');
+          break;
+        case 'Rename file':
+          await renameFile(fileName, filePath, fileData);
+          console.log('File modified');
+          break;
+        case 'Add to file':
           console.log('File modified');
           break;
 
         default:
-          const a = 1;
           console.log('Invalid command');
       }
     }
@@ -74,5 +104,5 @@ const watchFile = async (filename: string, filePath: string) => {
 };
 
 const fileName = 'text-file.txt';
-const filePath = './src/file-system/';
+const filePath = './src/file-system';
 const fileWatcher = watchFile(fileName, filePath);
