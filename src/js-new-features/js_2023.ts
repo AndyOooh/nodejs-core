@@ -1,4 +1,4 @@
-await Promise.resolve(console.log('Hello World'));
+// await Promise.resolve(console.log('Hello World'));
 //   const result = Object.groupBy()
 
 export {};
