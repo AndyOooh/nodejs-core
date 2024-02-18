@@ -1,6 +1,21 @@
 // import fs from 'fs/promises';
 import { watch, open } from 'node:fs/promises';
 
+const createFile = async (filename: string, filePath: string, data: any) => {
+  const completePath = `${filePath}/${filename}`;
+  try {
+    await open(completePath, 'r');
+    console.log(`file already exists ${completePath}`);
+  } catch (error: any) {
+    // console.log('error: ', error);
+    const newFileHandler = await open(completePath, 'w');
+    // await newFileHandler.write(data, 20, 'utf8');
+    await newFileHandler.write(data);
+    await newFileHandler.close();
+    // throw error;
+  }
+};
+
 const watchFile = async (filename: string, filePath: string) => {
   try {
     const completePath = `${filePath}/${filename}`;
@@ -20,16 +35,37 @@ const watchFile = async (filename: string, filePath: string) => {
       const buffer = Buffer.alloc(fileSize);
       console.log('🚀  buffer:', buffer);
 
-      const content = await fileHandler.read({
+      await fileHandler.read({
         buffer,
         offset: 0,
         // length: fileSize,
         position: 0,
       });
-      console.log('🚀  buffer:', buffer.);
-      console.log('🚀  content:', content, content.buffer.toString());
-      console.log('🚀  content2:', content.buffer[0], content.buffer[5].toString());
+
+      const fileContent = buffer.toString('utf8');
+      const indexOfFirstNewLine = fileContent.indexOf('\n');
+      console.log('🚀  indexOfFirstNewLine:', indexOfFirstNewLine);
+      const indexOfSecondNewLine = fileContent.lastIndexOf('\n');
+      console.log('🚀  indexOfSecondNewLine:', indexOfSecondNewLine);
+      const command = fileContent.slice(0, indexOfFirstNewLine);
+      const fileName = fileContent.slice(indexOfFirstNewLine + 1, indexOfSecondNewLine);
+      const fileData = fileContent.slice(indexOfSecondNewLine + 1);
+
+      switch (command) {
+        case 'Create a new file':
+          await createFile(fileName, filePath, fileData);
+          console.log('File created');
+          break;
+        case 'Modify a file':
+          console.log('File modified');
+          break;
+
+        default:
+          const a = 1;
+          console.log('Invalid command');
+      }
     }
+    fileHandler.close();
   } catch (error: any) {
     if (error.name === 'AbortError') console.log('Watcher aborted', error);
     console.log('error: ', error);
