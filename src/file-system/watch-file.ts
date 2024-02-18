@@ -35,9 +35,17 @@ const renameFile = async (filename: string, filePath: string, newFilename: strin
   }
 };
 
-
-
-// const addToFile = async (filename: string, filePath: string, data: any) => {
+const addToFile = async (filename: string, filePath: string, data: any) => {
+  const completePath = `${filePath}/${filename}`;
+  try {
+    const fileHandler = await open(completePath, 'a');
+    await fileHandler.write(data);
+    await fileHandler.close();
+  } catch (error: any) {
+    console.log('error adding to file: ', error);
+    throw error;
+  }
+};
 
 const watchFile = async (filename: string, filePath: string) => {
   try {
@@ -88,6 +96,7 @@ const watchFile = async (filename: string, filePath: string) => {
           console.log('File modified');
           break;
         case 'Add to file':
+          await addToFile(fileName, filePath, fileData);
           console.log('File modified');
           break;
 
