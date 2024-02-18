@@ -3,13 +3,11 @@ import { watch, open, unlink, rename } from 'node:fs/promises';
 const createFile = async (filename: string, filePath: string, data: any) => {
   const completePath = `${filePath}/${filename}`;
   try {
-    const exitistingFileHandler = await open(completePath, 'r');
-    console.log(`file already exists ${completePath}`);
-    exitistingFileHandler.close();
+    const fileHandler = await open(completePath, 'wx'); // fail if path exists
+    await fileHandler.write(data);
+    fileHandler.close();
   } catch (error: any) {
-    const newFileHandler = await open(completePath, 'w');
-    await newFileHandler.write(data);
-    await newFileHandler.close();
+    console.log(`file already exists ${completePath}`);
   }
 };
 
