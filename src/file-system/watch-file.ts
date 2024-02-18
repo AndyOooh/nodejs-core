@@ -5,16 +5,26 @@ const watchFile = async (filename: string, filePath: string) => {
   try {
     const completePath = `${filePath}/${filename}`;
     const fileHandler = await open(completePath, 'r');
-    const fileStats = await fileHandler.stat()
-    console.log('🚀  fileStats:', fileStats)
-    const fileSize = fileStats.size;
-    console.log('🚀  fileSize:', fileSize)
-    
+
     const watcher = watch(completePath, {
       encoding: 'utf8',
     });
-    
-    for await (const event of watcher) console.log(event);
+
+    for await (const event of watcher) {
+      console.log(event);
+      const fileStats = await fileHandler.stat();
+      console.log('🚀  fileStats:', fileStats);
+      const fileSize = fileStats.size; // in bytes or elements? I think elements
+      console.log('🚀  fileSize:', fileSize);
+
+      const content = await fileHandler.read({
+        buffer: Buffer.alloc(fileSize),
+        // offset: 0,
+        // length: fileSize,
+        // position: 0,
+      });
+      console.log('🚀  content:', content);
+    }
   } catch (error: any) {
     if (error.name === 'AbortError') console.log('Watcher aborted', error);
     console.log('error: ', error);
