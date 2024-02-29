@@ -14,8 +14,20 @@ const mainAsync = async () => {
   }
   await fileHandler.close();
   console.timeEnd('writeToFile');
+  console.log('mainAsync done 1')
 };
-// mainAsync();
+mainAsync();
+
+// (async () => {
+//   console.time('writeToFile');
+//   const fileHandler = await open(__dirname + '/test.txt', 'w');
+//   for (let i = 0; i < 1e5; i++) {
+//     // await fileHandler.write(i + '\n');
+//     await fileHandler.write(i + ' ');
+//   }
+//   // await fileHandler.close();
+//   console.timeEnd('writeToFile');
+// })();
 
 /*
  * Callback API
@@ -24,15 +36,15 @@ const mainAsync = async () => {
  * Sync API
  * Exec time: ??
  */
-fs.open(__dirname + '/test.txt', 'a', (err, fd) => {
-  console.time('writeToFile');
-  for (let i = 0; i < 1e5; i++) {
-    // fs.writeSync(fd, i + ' ');
+// fs.open(__dirname + '/test.txt', 'a', (err, fd) => {
+//   console.time('writeToFile');
+//   for (let i = 0; i < 1e5; i++) {
+//     // fs.writeSync(fd, i + ' ');
 
-    /* Gets order wrong. Event loop cant keep track? */
-    fs.write(fd, i + ' ', err => {
-      if (err) console.log('error writing to file: ', err);
-    });
-  }
-  console.timeEnd('writeToFile');
-});
+//     /* Gets order wrong. Event loop cant keep track? */
+//     fs.write(fd, i + ' ', err => {
+//       if (err) console.log('error writing to file: ', err);
+//     });
+//   }
+//   console.timeEnd('writeToFile');
+// });
