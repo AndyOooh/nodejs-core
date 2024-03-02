@@ -45,6 +45,7 @@ const addToFile = async (filename: string, filePath: string, data: any) => {
   }
 };
 
+/* Watch a file for changes and execute a command based on string in the file */
 const watchFile = async (filename: string, filePath: string) => {
   try {
     const completePath = `${filePath}/${filename}`;
@@ -110,6 +111,7 @@ const watchFile = async (filename: string, filePath: string) => {
   }
 };
 
+/* Execution example */
 const fileName = 'text-file.txt';
 const filePath = './src/file-system';
 const fileWatcher = watchFile(fileName, filePath);
