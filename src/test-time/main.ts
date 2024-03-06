@@ -1,6 +1,6 @@
 import { startTime } from './start-time';
 
-const logTimeEnd = () => {
+const timeLogTest = () => {
   console.time('time-test1');
   setTimeout(() => {
     console.log('Pausing 1 sec');
@@ -9,4 +9,4 @@ const logTimeEnd = () => {
   startTime();
 };
 
-logTimeEnd();
+timeLogTest();

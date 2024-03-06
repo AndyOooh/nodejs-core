@@ -12,8 +12,8 @@ const mainAsync = async () => {
   const lalala = stream.write(buff);
   console.log('🚀  lalala:', lalala)
   console.log(stream.writableLength);
-  const lal = stream.write('Hrello');
-  console.log('🚀  lal:', lal)
+  const writeRes = stream.write('Hrello');
+  console.log('🚀  writeRes:', writeRes)
   console.log(stream.writableLength);
 
   stream.on('drain', () => {
