@@ -1,7 +1,7 @@
 export const innnerFunc = () => {
   /* starting timer */
-  console.time('time-test2');
+  console.time('startedSecond');
 
   /* This is started in another file */
-  console.timeEnd('time-test1');
+  console.timeEnd('startedFirst');
 };
